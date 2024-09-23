@@ -1,6 +1,7 @@
 /_extras
 .env
 scrapper.log
-config.js
+config
 *.db
 *.sqlite
+/node_modules

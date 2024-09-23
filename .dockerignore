@@ -1,9 +1,9 @@
 ./assets
 ./_extras
 ./src/.env
-./src/config.js
+./src/config
 ./src/.env.example
-./src/sample-config.js
+./src/sample-config
 ./src/node_modules
 
 *.db
