@@ -1,4 +1,4 @@
-import { pool } from '../database/database.js' // Assuming PostgreSQL pool from pg is exported in database.js
+import { pool } from '/src/database/database.js' // Assuming PostgreSQL pool from pg is exported in database.js
 
 
 const saveLog = async (data) => {

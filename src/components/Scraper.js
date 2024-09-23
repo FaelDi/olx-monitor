@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio'
-import $httpClient from './HttpClient.js'
-import scraperRepository from '../repositories/scrapperRepository.js'
+import $httpClient from '/src/components/HttpClient.js'
+import scraperRepository from '/src/repositories/scrapperRepository.js'
 
 import Ad from './Ad.js'
 

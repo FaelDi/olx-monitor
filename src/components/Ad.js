@@ -1,8 +1,8 @@
 'use strict';
 
-import notifier from './Notifier.js'
+import notifier from '/src/components/Notifier.js'
 
-import adRepository from '../repositories/adRepository.js'
+import adRepository from '/src/repositories/adRepository.js'
 
 class Ad {
 
