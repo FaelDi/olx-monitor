@@ -37,7 +37,7 @@ const httpClient = async (url) => {
 
     return response.body
   } catch (error) {
-    console.log("error: "+error)
+    console.debug("error: "+error)
   }
 }
 module.exports = httpClient

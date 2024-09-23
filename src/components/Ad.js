@@ -33,12 +33,12 @@ class Ad {
 
             else {
                 // create a new entry in the database
-                console.log("url: "+this.url+"\ntitulo: "+this.title+"\n");
+                console.debug("url: "+this.url+"\ntitulo: "+this.title+"\n");
                 return this.addToDataBase()
             }
 
         } catch (error) {
-            console.log("error: "+error);
+            console.debug("error: "+error);
         }
     }
 
@@ -55,11 +55,11 @@ class Ad {
 
         try {
             await adRepository.createAd(this)
-            console.log('Ad ' + this.id + ' added to the database')
+            console.debug('Ad ' + this.id + ' added to the database')
         }
 
         catch (error) {
-            console.log("error: "+error)
+            console.debug("error: "+error)
         }
 
         if (this.notify) {
@@ -70,17 +70,17 @@ class Ad {
             while (retries > 0) {
                 try {
                     await notifier.sendNotification(msg, this.id);
-                    console.log('Notification sent successfully');
+                    console.debug('Notification sent successfully');
                     break;  // Exit loop if successful
                 } catch (error) {
                     retries--;
-                    console.log(`************${msg}************`);
-                    console.log(`error: Could not send a notification. Retries left: ${retries}`);
+                    console.debug(`************${msg}************`);
+                    console.debug(`error: Could not send a notification. Retries left: ${retries}`);
         
                     if (retries > 0) {
                         await delay(30000);  // Wait for 2 seconds before retrying
                     } else {
-                        console.log('Failed to send notification after multiple attempts.');
+                        console.debug('Failed to send notification after multiple attempts.');
                     }
                 }
             }
@@ -88,12 +88,12 @@ class Ad {
     }
 
     updatePrice = async () => {
-        console.log('updatePrice')
+        console.debug('updatePrice')
 
         try {
             await adRepository.updateAd(this)
         } catch (error) {
-            console.log("error: "+error)
+            console.debug("error: "+error)
         }
     }
 
@@ -106,7 +106,7 @@ class Ad {
             // just send a notification if the price dropped
             if (this.price < this.saved.price) {
 
-                console.log('This ad had a price reduction: ' + this.url)
+                console.debug('This ad had a price reduction: ' + this.url)
 
                 const decreasePercentage = Math.abs(Math.round(((this.price - this.saved.price) / this.saved.price) * 100))
 
@@ -116,7 +116,7 @@ class Ad {
                 try {
                     await notifier.sendNotification(msg, this.id)
                 } catch (error) {
-                    console.log("error: "+error)
+                    console.debug("error: "+error)
                 }
             }
         }

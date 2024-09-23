@@ -53,7 +53,7 @@ const createTables = async () => {
 
     // Commit the transaction
     await pool.query('COMMIT');
-    console.log("Tables created successfully.");
+    console.debug("Tables created successfully.");
   } catch (error) {
     // Rollback the transaction if an error occurs
     await pool.query('ROLLBACK');

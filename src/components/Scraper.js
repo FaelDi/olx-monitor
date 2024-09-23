@@ -23,7 +23,7 @@ const scraper = async (url) => {
     const parsedUrl = new URL(url)
     const searchTerm = parsedUrl.searchParams.get('q') || ''
     const notify = await urlAlreadySearched(url)
-    console.log(`Will notify: ${notify}`)
+    console.debug(`Will notify: ${notify}`)
 
     do {
         const currentUrl = setUrlParam(url, 'o', page)
@@ -33,21 +33,21 @@ const scraper = async (url) => {
             const $         = cheerio.load(response)
             nextPage        = await scrapePage($, searchTerm, notify, url)
         } catch (error) {
-            console.log("error: "+error)
+            console.debug("error: "+error)
             return
         }
         page++
 
     } while (nextPage);
 
-    console.log('Valid ads: ' + validAds)
+    console.debug('Valid ads: ' + validAds)
 
     if (validAds) {
         const averagePrice = sumPrices / validAds;
 
-        console.log('Maximum price: ' + maxPrice)
-        console.log('Minimum price: ' + minPrice)
-        console.log('Average price: ' + sumPrices / validAds)
+        console.debug('Maximum price: ' + maxPrice)
+        console.debug('Minimum price: ' + minPrice)
+        console.debug('Average price: ' + sumPrices / validAds)
 
         const scrapperLog = {
             url,
@@ -77,8 +77,8 @@ const scrapePage = async ($, searchTerm, notify) => {
 
         adsFound += adList.length
 
-        console.log(`Checking new ads for: ${searchTerm}`)
-        console.log('Ads found: ' + adsFound)
+        console.debug(`Checking new ads for: ${searchTerm}`)
+        console.debug('Ads found: ' + adsFound)
 
         for (let i = 0; i < adList.length; i++) {
 
@@ -112,7 +112,7 @@ const scrapePage = async ($, searchTerm, notify) => {
 
         return true
     } catch (error) {
-        console.log("error: "+error);
+        console.debug("error: "+error);
         throw new Error('Scraping failed');
     }
 }
@@ -123,10 +123,10 @@ const urlAlreadySearched = async (url) => {
         if (ad.length) {
             return true
         }
-        console.log('First run, no notifications')
+        console.debug('First run, no notifications')
         return false
     } catch (error) {
-        console.log("error: "+error)
+        console.debug("error: "+error)
         return false
     }
 }

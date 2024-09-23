@@ -16,7 +16,7 @@ const getAd = async (id) => {
 
         return res.rows[0];
     } catch (error) {
-        console.log("error: "+`Error getting ad by ID: ${error.message}`);
+        console.debug("error: "+`Error getting ad by ID: ${error.message}`);
         throw error;
     }
 };
@@ -36,7 +36,7 @@ const getAdsBySearchTerm = async (term, limit) => {
 
         return res.rows;
     } catch (error) {
-        console.log("error: "+`Error getting ads by search term: ${error.message}`);
+        console.debug("error: "+`Error getting ads by search term: ${error.message}`);
         throw error;
     }
 };
@@ -56,7 +56,7 @@ const getAdsBySearchId = async (id, limit) => {
 
         return res.rows;
     } catch (error) {
-        console.log("error: "+`Error getting ads by search ID: ${error.message}`);
+        console.debug("error: "+`Error getting ads by search ID: ${error.message}`);
         throw error;
     }
 };
@@ -84,7 +84,7 @@ const createAd = async (ad) => {
         await pool.query(query, values);
         return true;
     } catch (error) {
-        console.log("error: "+`Error creating ad: ${error.message}`);
+        console.debug("error: "+`Error creating ad: ${error.message}`);
         throw error;
     }
 };
@@ -99,7 +99,7 @@ const updateAd = async (ad) => {
         await pool.query(query, values);
         return true;
     } catch (error) {
-        console.log("error: "+`Error updating ad: ${error.message}`);
+        console.debug("error: "+`Error updating ad: ${error.message}`);
         throw error;
     }
 };

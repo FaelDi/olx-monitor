@@ -25,7 +25,7 @@ const saveLog = async (data) => {
         const res = await pool.query(query, values);
         return res.rows;
     } catch (error) {
-        console.log("error: "+`Error saving log: ${error.message}`);
+        console.debug("error: "+`Error saving log: ${error.message}`);
         throw error;
     }
 };
@@ -49,7 +49,7 @@ const getLogsByUrl = async (url, limit) => {
 
         return res.rows;
     } catch (error) {
-        console.log("error: "+`Error retrieving logs: ${error.message}`);
+        console.debug("error: "+`Error retrieving logs: ${error.message}`);
         throw error;
     }
 };
