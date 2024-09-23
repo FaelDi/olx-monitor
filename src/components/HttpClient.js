@@ -1,6 +1,6 @@
 
-import { getCycleTLSInstance } from "/src/components/CycleTls.js"
-import { requestsFingerprints } from "/src/config/requestsFingerprints.js"
+import { getCycleTLSInstance } from "./CycleTls.js"
+import { requestsFingerprints } from "../requestsFingerprints.js"
 
 const headers = {
   Accept:
