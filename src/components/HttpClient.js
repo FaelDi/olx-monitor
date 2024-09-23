@@ -1,4 +1,3 @@
-const $logger = require("./Logger.js")
 const { getCycleTLSInstance } = require("./CycleTls")
 const { requestsFingerprints } = require("../requestsFingerprints.js")
 

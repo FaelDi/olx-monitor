@@ -1,8 +1,8 @@
 const { pool } = require('../database/database.js'); // Assuming PostgreSQL pool from pg is exported in database.js
-const $logger = require('../components/Logger.js');
+
 
 const saveLog = async (data) => {
-    $logger.debug('scrapperRepository: saveLog');
+    console.debug('scrapperRepository: saveLog');
 
     const query = `
         INSERT INTO logs (url, adsFound, averagePrice, minPrice, maxPrice, created)
@@ -31,7 +31,7 @@ const saveLog = async (data) => {
 };
 
 const getLogsByUrl = async (url, limit) => {
-    $logger.debug('scrapperRepository: getLogsByUrl');
+    console.debug('scrapperRepository: getLogsByUrl');
 
     const query = `
         SELECT * FROM logs WHERE url = $1 LIMIT $2
