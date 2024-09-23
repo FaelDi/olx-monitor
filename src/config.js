@@ -25,7 +25,7 @@ config.database = process.env.DATABASE
 config.databasePassword = process.env.DATABASE_PASSWORD
 config.databasePort = process.env.DATABASE_PORT
 config.logger={
-    logFilePath: 'C:/Users/d_raf/OneDrive/Documentos/repositorios/olx-monitor/src/data/scrapper.log',
+    logFilePath: 'src/data/scrapper.log',
     timestampFormat:'YYYY-MM-DD HH:mm:ss'
 }
 
