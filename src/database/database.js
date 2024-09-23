@@ -7,6 +7,9 @@ const pool = new Pool({
   database: config.database,
   password: config.databasePassword,
   port: config.databasePort,
+  ssl: {
+    rejectUnauthorized: false,  // This accepts self-signed certificates (not recommended for production)
+  },
 });
 
 // Function to create tables
