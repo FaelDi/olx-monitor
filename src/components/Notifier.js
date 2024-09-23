@@ -11,4 +11,3 @@ exports.sendNotification = async (msg) => {
     const encodedMsg = encodeURIComponent(msg);
     return  axios.get(apiUrl + encodedMsg, { timeout: 10000 });
 };
-

@@ -1,6 +1,5 @@
-const { getCycleTLSInstance } = require("./CycleTls")
-const { requestsFingerprints } = require("../requestsFingerprints.js")
-
+const { getCycleTLSInstance } = require("./CycleTls");
+const { requestsFingerprints } = require("../requestsFingerprints.js");
 
 const headers = {
   Accept:
@@ -13,31 +12,27 @@ const headers = {
   "Sec-Fetch-Site": "none",
   Pragma: "no-cache",
   "Cache-Control": "no-cache",
-}
+};
 
 const httpClient = async (url) => {
-  const cycleTLS = await getCycleTLSInstance()
+  const cycleTLS = await getCycleTLSInstance();
 
-  const randomRequestFingerprint =
+  const { 0: userAgent, 1: ja3 } = 
     requestsFingerprints[
       Math.floor(Math.random() * requestsFingerprints.length)
-    ]
+    ];
 
   try {
-    // Send request
     const response = await cycleTLS(
       url,
-      {
-        userAgent: randomRequestFingerprint[0],
-        ja3: randomRequestFingerprint[1],
-        headers,
-      },
+      { userAgent, ja3, headers },
       "get"
-    )
+    );
 
-    return response.body
+    return response.body;
   } catch (error) {
-    console.debug("error: "+error)
+    console.debug(`error: ${error}`);
   }
-}
-module.exports = httpClient
+};
+
+module.exports = httpClient;
