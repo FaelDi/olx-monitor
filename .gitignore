@@ -4,5 +4,5 @@ scrapper.log
 config
 *.db
 *.sqlite
-/node_modules
+/src/node_modules
 node_modules
