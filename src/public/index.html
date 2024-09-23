@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Scraper</title>
+
+    <style>
+        body {
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            height: 100vh;
+
+            margin: 0;
+
+            background-color: #f0f0f0;
+
+        }
+        #startButton {
+            height: 50px; /* Increased height */
+            width: 150px; /* Increased width */
+            background-color: black; /* Black background */
+            color: white; /* White text color */
+            border: none;
+
+            border-radius: 10px; /* Rounded corners */
+            font-size: 16px; /* Larger font size */
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+        }
+        #startButton:hover {
+
+            background-color: #333; /* Darker background on hover */
+
+            transform: scale(1.05); /* Slightly larger on hover */
+
+        }
+
+    </style>
+</head>
+<body>
+
+    <button id="startButton">Start Scraper</button>
+
+    <script>
+
+        document.getElementById('startButton').addEventListener('click', () => {
+            fetch('/start-scraper', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => console.log(data))
+
+                .catch(error => console.error('Error:', error));
+
+        });
+    </script>
+
+</body>
+</html>
