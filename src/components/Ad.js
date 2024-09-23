@@ -1,8 +1,8 @@
 'use strict';
 
-import notifier from './Notifier.js'
+const notifier = require('./Notifier.js')
 
-import adRepository from '../repositories/adRepository.js'
+const adRepository = require('../repositories/adRepository.js')
 
 class Ad {
 
@@ -141,4 +141,4 @@ class Ad {
     }
 }
 
-export default Ad
+module.exports = Ad

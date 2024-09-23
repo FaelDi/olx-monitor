@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Programa que monitora novos anúncios feitos no OLX, alteração de preços em anúncios existentes e envia notificações pelo Telegram.",
   "main": "index",
-  "type": "module",
   "dependencies": {
     "axios": "^1.6.2",
     "cheerio": "^1.0.0-rc.3",

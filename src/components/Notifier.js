@@ -1,7 +1,9 @@
 'use strict';
 
-import config from '../config.js';
-import axios from 'axios';
+
+const config = require('../config');
+const axios = require('axios');
+
 
 const sendNotification =  (msg) => {
     console.log("enviado: "+msg);
@@ -10,4 +12,4 @@ const sendNotification =  (msg) => {
     return  axios.get(apiUrl + encodedMsg, { timeout: 10000 });
 };
 
-export default sendNotification
+module.exports = sendNotification

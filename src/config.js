@@ -1,5 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
+require('dotenv').config()
 
 let config = {}
 
@@ -30,4 +29,4 @@ config.logger={
     timestampFormat:'YYYY-MM-DD HH:mm:ss'
 }
 
-export default config
+module.exports = config

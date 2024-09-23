@@ -1,8 +1,7 @@
-import * as cheerio from 'cheerio'
-import $httpClient from './HttpClient.js'
-import scraperRepository from '../repositories/scrapperRepository.js'
-
-import Ad from './Ad'
+const cheerio = require('cheerio')
+const $httpClient = require('./HttpClient.js')
+const scraperRepository = require('../repositories/scrapperRepository.js')
+const Ad = require('./Ad.js');
 
 let page = 1
 let maxPrice = 0
@@ -152,6 +151,6 @@ const checkMaxPrice = (price, maxPrice) => {
     else return maxPrice
 }
 
-export {
+module.exports = {
     scraper
 }

@@ -1,5 +1,6 @@
-import config from '../config.js'
-import SimpleNodeLogger from 'simple-node-logger'
+const config = require('../config')
+const SimpleNodeLogger = require('simple-node-logger'),
 logger = SimpleNodeLogger.createSimpleLogger( config.logger );
+
 
 module.exports = logger
