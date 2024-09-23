@@ -1,8 +1,8 @@
-import config from "./config.js"
+import config from "./config"
 import cron from "node-cron"
-import { initializeCycleTLS } from "./components/CycleTls.js"
-import { scraper } from "./components/Scraper.js"
-import { createTables } from "./database/database.js"
+import { initializeCycleTLS } from "./components/CycleTls"
+import { scraper } from "./components/Scraper"
+import { createTables } from "./database/database"
 
 const runScraper = async () => {
 

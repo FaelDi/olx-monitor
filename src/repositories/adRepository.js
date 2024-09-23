@@ -1,4 +1,4 @@
-import { pool } from '/src/database/database.js' // Assuming you're using pg.Pool
+import { pool } from '/src/database/database' // Assuming you're using pg.Pool
 
 const getAd = async (id) => {
    console.debug('adRepository: getAd');

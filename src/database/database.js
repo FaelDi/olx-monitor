@@ -1,6 +1,6 @@
 import pkg from 'pg';        // Import the entire 'pg' module as a default import.
 const { Pool } = pkg;
-import config from '/src/config.js' // Assuming this contains your PostgreSQL config
+import config from '/src/config' // Assuming this contains your PostgreSQL config
 
 // Initialize PostgreSQL connection
 const pool = new Pool({

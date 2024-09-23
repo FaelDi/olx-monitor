@@ -1,8 +1,8 @@
 import * as cheerio from 'cheerio'
-import $httpClient from '/src/components/HttpClient.js'
-import scraperRepository from '/src/repositories/scrapperRepository.js'
+import $httpClient from '/src/components/HttpClient'
+import scraperRepository from '/src/repositories/scrapperRepository'
 
-import Ad from './Ad.js'
+import Ad from './Ad'
 
 let page = 1
 let maxPrice = 0
