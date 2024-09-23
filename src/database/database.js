@@ -1,62 +1,66 @@
-const path = require('path')
-const config = require('../config')
-const sqlite = require("sqlite3").verbose()
-const db = new sqlite.Database(
-  path.join(__dirname, '../', config.dbFile)
-)
+const { Pool } = require('pg');
+const config = require('../config'); // Assuming this contains your PostgreSQL config
 
+// Initialize PostgreSQL connection
+const pool = new Pool({
+  user: config.databaseUser,
+  host: config.databaseHost,
+  database: config.database,
+  password: config.databasePassword,
+  port: config.databasePort,
+});
+
+// Function to create tables
 const createTables = async () => {
-
   // Define separate SQL statements for each table creation
   const queries = [
     `
-    CREATE TABLE IF NOT EXISTS "ads" (
-        "id"            INTEGER NOT NULL UNIQUE,
-        "searchTerm"    TEXT NOT NULL,
-        "title"	        TEXT NOT NULL,
-        "price"         INTEGER NOT NULL,
-        "url"           TEXT NOT NULL,
-        "created"       TEXT NOT NULL,
-        "lastUpdate"    TEXT NOT NULL
-    );`,
-
-    `CREATE TABLE IF NOT EXISTS "logs" (
-        "id"            INTEGER NOT NULL UNIQUE,
-        "url"           TEXT NOT NULL,  
-        "adsFound"      INTEGER NOT NULL, 
-        "averagePrice"  NUMERIC NOT NULL,
-        "minPrice"      NUMERIC NOT NULL,
-        "maxPrice"      NUMERIC NOT NULL, 
-        "created"       TEXT NOT NULL,
-        PRIMARY KEY("id" AUTOINCREMENT)
-    );`
+    CREATE TABLE IF NOT EXISTS ads (
+        id SERIAL PRIMARY KEY,
+        searchTerm TEXT NOT NULL,
+        title TEXT NOT NULL,
+        price INTEGER NOT NULL,
+        url TEXT NOT NULL,
+        created TIMESTAMP NOT NULL,
+        lastUpdate TIMESTAMP NOT NULL
+    );
+    `,
+    `
+    CREATE TABLE IF NOT EXISTS logs (
+        id SERIAL PRIMARY KEY,
+        url TEXT NOT NULL,  
+        adsFound INTEGER NOT NULL, 
+        averagePrice NUMERIC NOT NULL,
+        minPrice NUMERIC NOT NULL,
+        maxPrice NUMERIC NOT NULL, 
+        created TIMESTAMP NOT NULL
+    );
+    `,
+    'CREATE INDEX index_logs ON logs USING btree(id);',
+    'CREATE INDEX index_ads ON ads USING btree(id);'
   ];
 
-  return new Promise(function(resolve, reject) {
+  try {
+    // Use a transaction to execute multiple queries
+    await pool.query('BEGIN');
+
     // Iterate through the array of queries and execute them one by one
-    const executeQuery = (index) => {
-      if (index === queries.length) {
-        resolve(true); // All queries have been executed
-        return;
-      }
+    for (const query of queries) {
+      await pool.query(query);
+    }
 
-      db.run(queries[index], function(error) {
-        if (error) {
-          reject(error);
-          return;
-        }
+    // Commit the transaction
+    await pool.query('COMMIT');
+    console.log("Tables created successfully.");
+  } catch (error) {
+    // Rollback the transaction if an error occurs
+    await pool.query('ROLLBACK');
+    console.error("Error creating tables:", error.message);
+  }
+};
 
-        // Execute the next query in the array
-        executeQuery(index + 1);
-      });
-    };
-
-    // Start executing the queries from index 0
-    executeQuery(0);
-  });
-}
-
+// Export the pool and createTables function
 module.exports = {
-  db,
-  createTables
-}
+  pool,
+  createTables,
+};

@@ -37,7 +37,7 @@ const httpClient = async (url) => {
 
     return response.body
   } catch (error) {
-    $logger.error(error)
+    console.log("error: "+error)
   }
 }
 

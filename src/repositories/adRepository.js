@@ -1,91 +1,75 @@
-const { db } = require('../database/database.js')
-const $logger = require('../components/Logger.js')
+const { pool } = require('../database/database.js'); // Assuming you're using pg.Pool
+const $logger = require('../components/Logger.js');
 
 const getAd = async (id) => {
-    $logger.debug('adRepositorie: getAd')
+    $logger.debug('adRepository: getAd');
 
-    const query = `SELECT * FROM ads WHERE id = ?`
-    const values = [id]
+    const query = `SELECT * FROM ads WHERE id = $1`;
+    const values = [id];
 
-    return new Promise(function (resolve, reject) {
-        db.get(query, values, function (error, row) {
+    try {
+        const res = await pool.query(query, values);
 
-            if (error) {
-                reject(error)
-                return
-            }
+        if (res.rows.length === 0) {
+            throw new Error('No ad with this ID was found');
+        }
 
-            if (!row) {
-                reject('No ad with this ID was found')
-                return
-            }
-
-            resolve(row)
-        })
-    })
-}
-
+        return res.rows[0];
+    } catch (error) {
+        console.log("error: "+`Error getting ad by ID: ${error.message}`);
+        throw error;
+    }
+};
 
 const getAdsBySearchTerm = async (term, limit) => {
-    $logger.debug('adRepositorie: getAd')
+    $logger.debug('adRepository: getAdsBySearchTerm');
 
-    const query = `SELECT * FROM ads WHERE searchTerm = ? LIMIT ?`
-    const values = [term, limit]
+    const query = `SELECT * FROM ads WHERE searchTerm = $1 LIMIT $2`;
+    const values = [term, limit];
 
-    return new Promise(function (resolve, reject) {
-        db.all(query, values, function (error, rows) {
+    try {
+        const res = await pool.query(query, values);
 
-            if (error) {
-                reject(error)
-                return
-            }
+        if (res.rows.length === 0) {
+            throw new Error('No ad with this term was found');
+        }
 
-            if (!rows) {
-                reject('No ad with this term was found')
-                return
-            }
-
-            resolve(rows)
-        })
-    })
-}
-
+        return res.rows;
+    } catch (error) {
+        console.log("error: "+`Error getting ads by search term: ${error.message}`);
+        throw error;
+    }
+};
 
 const getAdsBySearchId = async (id, limit) => {
-    $logger.debug('adRepositorie: getAd')
+    $logger.debug('adRepository: getAdsBySearchId');
 
-    const query = `SELECT * FROM ads WHERE searchId = ? LIMIT ?`
-    const values = [id, limit]
+    const query = `SELECT * FROM ads WHERE searchId = $1 LIMIT $2`;
+    const values = [id, limit];
 
-    return new Promise(function (resolve, reject) {
-        db.all(query, values, function (error, rows) {
+    try {
+        const res = await pool.query(query, values);
 
-            if (error) {
-                reject(error)
-                return
-            }
+        if (res.rows.length === 0) {
+            throw new Error('No ad with this search ID was found');
+        }
 
-            if (!rows) {
-                reject('No ad with this id was found')
-                return
-            }
-
-            resolve(rows)
-        })
-    })
-}
-
+        return res.rows;
+    } catch (error) {
+        console.log("error: "+`Error getting ads by search ID: ${error.message}`);
+        throw error;
+    }
+};
 
 const createAd = async (ad) => {
-    $logger.debug('adRepositorie: createAd')
+    $logger.debug('adRepository: createAd');
 
     const query = `
-        INSERT INTO ads( id, url, title, searchTerm, price, created, lastUpdate )
-        VALUES( ?, ?, ?, ?, ?, ?, ? )
-    `
+        INSERT INTO ads (id, url, title, searchTerm, price, created, lastUpdate)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `;
 
-    const now = new Date().toISOString()
-
+    const now = new Date().toISOString();
     const values = [
         ad.id,
         ad.url,
@@ -94,39 +78,31 @@ const createAd = async (ad) => {
         ad.price,
         now,
         now
-    ]
+    ];
 
-    return new Promise(function (resolve, reject) {
-        db.run(query, values, function (error, rows) {
-
-            if (error) {
-                reject(error)
-                return
-            }
-
-            resolve(rows)
-        })
-    })
-}
+    try {
+        await pool.query(query, values);
+        return true;
+    } catch (error) {
+        console.log("error: "+`Error creating ad: ${error.message}`);
+        throw error;
+    }
+};
 
 const updateAd = async (ad) => {
-    $logger.debug('adRepositorie: updateAd')
+    $logger.debug('adRepository: updateAd');
 
-    const query = `UPDATE ads SET price = ?, lastUpdate = ?  WHERE id = ?`
-    const values = [ad.price, new Date().toISOString(), ad.id]
+    const query = `UPDATE ads SET price = $1, lastUpdate = $2 WHERE id = $3`;
+    const values = [ad.price, new Date().toISOString(), ad.id];
 
-    return new Promise(function (resolve, reject) {
-        db.run(query, values, function (error) {
-
-            if (error) {
-                reject(error)
-                return
-            }
-
-            resolve(true)
-        })
-    })
-}
+    try {
+        await pool.query(query, values);
+        return true;
+    } catch (error) {
+        console.log("error: "+`Error updating ad: ${error.message}`);
+        throw error;
+    }
+};
 
 module.exports = {
     getAd,
@@ -134,4 +110,4 @@ module.exports = {
     getAdsBySearchId,
     createAd,
     updateAd
-}
+};

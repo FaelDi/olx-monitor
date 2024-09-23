@@ -11,13 +11,13 @@ const runScraper = async () => {
     try {
       scraper(config.urls[i])
     } catch (error) {
-      $logger.error(error)
+      console.log("error: "+error)
     }
   }
 }
 
 const main = async () => {
-  $logger.info("Program started")
+  console.log("Program started")
   await createTables()
   await initializeCycleTLS()
   runScraper()

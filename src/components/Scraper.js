@@ -25,7 +25,7 @@ const scraper = async (url) => {
     const parsedUrl = new URL(url)
     const searchTerm = parsedUrl.searchParams.get('q') || ''
     const notify = await urlAlreadySearched(url)
-    $logger.info(`Will notify: ${notify}`)
+    console.log(`Will notify: ${notify}`)
 
     do {
         currentUrl = setUrlParam(url, 'o', page)
@@ -35,21 +35,21 @@ const scraper = async (url) => {
             const $         = cheerio.load(response)
             nextPage        = await scrapePage($, searchTerm, notify, url)
         } catch (error) {
-            $logger.error(error)
+            console.log("error: "+error)
             return
         }
         page++
 
     } while (nextPage);
 
-    $logger.info('Valid ads: ' + validAds)
+    console.log('Valid ads: ' + validAds)
 
     if (validAds) {
         const averagePrice = sumPrices / validAds;
 
-        $logger.info('Maximum price: ' + maxPrice)
-        $logger.info('Minimum price: ' + minPrice)
-        $logger.info('Average price: ' + sumPrices / validAds)
+        console.log('Maximum price: ' + maxPrice)
+        console.log('Minimum price: ' + minPrice)
+        console.log('Average price: ' + sumPrices / validAds)
 
         const scrapperLog = {
             url,
@@ -79,8 +79,8 @@ const scrapePage = async ($, searchTerm, notify) => {
 
         adsFound += adList.length
 
-        $logger.info(`Checking new ads for: ${searchTerm}`)
-        $logger.info('Ads found: ' + adsFound)
+        console.log(`Checking new ads for: ${searchTerm}`)
+        console.log('Ads found: ' + adsFound)
 
         for (let i = 0; i < adList.length; i++) {
 
@@ -114,7 +114,7 @@ const scrapePage = async ($, searchTerm, notify) => {
 
         return true
     } catch (error) {
-        $logger.error(error);
+        console.log("error: "+error);
         throw new Error('Scraping failed');
     }
 }
@@ -125,10 +125,10 @@ const urlAlreadySearched = async (url) => {
         if (ad.length) {
             return true
         }
-        $logger.info('First run, no notifications')
+        console.log('First run, no notifications')
         return false
     } catch (error) {
-        $logger.error(error)
+        console.log("error: "+error)
         return false
     }
 }

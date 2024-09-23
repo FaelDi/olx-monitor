@@ -34,11 +34,12 @@ class Ad {
 
             else {
                 // create a new entry in the database
+                console.log("url: "+this.url+"\ntitulo: "+this.title+"\n");
                 return this.addToDataBase()
             }
 
         } catch (error) {
-            $logger.error(error);
+            console.log("error: "+error);
         }
     }
 
@@ -55,30 +56,45 @@ class Ad {
 
         try {
             await adRepository.createAd(this)
-            $logger.info('Ad ' + this.id + ' added to the database')
+            console.log('Ad ' + this.id + ' added to the database')
         }
 
         catch (error) {
-            $logger.error(error)
+            console.log("error: "+error)
         }
 
         if (this.notify) {
-            try {
-                const msg = 'New ad found!\n' + this.title + ' - R$' + this.price + '\n\n' + this.url
-                notifier.sendNotification(msg, this.id)
-            } catch (error) {
-                $logger.error('Could not send a notification')
+            const msg = 'Novo Anuncio encontrado!\n' + this.title + ' - R$' + this.price + '\n\n' + this.url;
+            let retries = 20;
+            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));  // Delay function
+        
+            while (retries > 0) {
+                try {
+                    await notifier.sendNotification(msg, this.id);
+                    console.log('Notification sent successfully');
+                    break;  // Exit loop if successful
+                } catch (error) {
+                    retries--;
+                    console.log(`************${msg}************`);
+                    console.log(`error: Could not send a notification. Retries left: ${retries}`);
+        
+                    if (retries > 0) {
+                        await delay(30000);  // Wait for 2 seconds before retrying
+                    } else {
+                        console.log('Failed to send notification after multiple attempts.');
+                    }
+                }
             }
         }
     }
 
     updatePrice = async () => {
-        $logger.info('updatePrice')
+        console.log('updatePrice')
 
         try {
             await adRepository.updateAd(this)
         } catch (error) {
-            $logger.error(error)
+            console.log("error: "+error)
         }
     }
 
@@ -91,17 +107,17 @@ class Ad {
             // just send a notification if the price dropped
             if (this.price < this.saved.price) {
 
-                $logger.info('This ad had a price reduction: ' + this.url)
+                console.log('This ad had a price reduction: ' + this.url)
 
                 const decreasePercentage = Math.abs(Math.round(((this.price - this.saved.price) / this.saved.price) * 100))
 
-                const msg = 'Price drop found! ' + decreasePercentage + '% OFF!\n' +
+                const msg = 'Queda de preço encontrada! ' + decreasePercentage + '% OFF!\n' +
                     'From R$' + this.saved.price + ' to R$' + this.price + '\n\n' + this.url
 
                 try {
                     await notifier.sendNotification(msg, this.id)
                 } catch (error) {
-                    $logger.error(error)
+                    console.log("error: "+error)
                 }
             }
         }
@@ -112,14 +128,17 @@ class Ad {
     // let's clean those empty ads
     isValidAd = () => {
 
-        if (!isNaN(this.price) && this.url && this.id) {
-            this.valid = true
-            return true
+
+        if (!isNaN(this.price) && this.url && this.id && this.title) {
+            if(this.title.toLowerCase().includes(this.searchTerm.toLowerCase())){
+                this.valid = true
+                return true
+            }
         }
-        else {
-            this.valid = false
-            return false
-        }
+        
+        
+        this.valid = false
+        return false
     }
 }
 

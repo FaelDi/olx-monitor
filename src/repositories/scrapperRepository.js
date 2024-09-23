@@ -1,15 +1,15 @@
-const { db } = require('../database/database.js')
-const $logger = require('../components/Logger.js')
+const { pool } = require('../database/database.js'); // Assuming PostgreSQL pool from pg is exported in database.js
+const $logger = require('../components/Logger.js');
 
 const saveLog = async (data) => {
-    $logger.debug('scrapperRepository: saveLog')
+    $logger.debug('scrapperRepository: saveLog');
 
     const query = `
-        INSERT INTO logs(  url, adsFound, averagePrice, minPrice, maxPrice, created )
-        VALUES( ?, ?, ?, ?, ?, ? )
-    `
+        INSERT INTO logs (url, adsFound, averagePrice, minPrice, maxPrice, created)
+        VALUES ($1, $2, $3, $4, $5, $6)
+    `;
 
-    const now = new Date().toISOString()
+    const now = new Date().toISOString();
 
     const values = [
         data.url,
@@ -18,46 +18,43 @@ const saveLog = async (data) => {
         data.minPrice,
         data.maxPrice,
         now,
-    ]
+    ];
 
-    return new Promise(function (resolve, reject) {
-        db.run(query, values, function (error, rows) {
-
-            if (error) {
-                reject(error)
-                return
-            }
-
-            resolve(rows)
-        })
-    })
-}
+    try {
+        // Execute the query with PostgreSQL
+        const res = await pool.query(query, values);
+        return res.rows;
+    } catch (error) {
+        console.log("error: "+`Error saving log: ${error.message}`);
+        throw error;
+    }
+};
 
 const getLogsByUrl = async (url, limit) => {
-    $logger.debug('scrapperRepository: getLogsByUrld')
+    $logger.debug('scrapperRepository: getLogsByUrl');
 
-    const query = `SELECT * FROM logs WHERE url = ? LIMIT ?`
-    const values = [url, limit]
+    const query = `
+        SELECT * FROM logs WHERE url = $1 LIMIT $2
+    `;
 
-    return new Promise(function (resolve, reject) {
-        db.all(query, values, function (error, rows) {
+    const values = [url, limit];
 
-            if (error) {
-                reject(error)
-                return
-            }
+    try {
+        // Execute the query with PostgreSQL
+        const res = await pool.query(query, values);
 
-            if (!rows) {
-                reject('No ad with this id was found')
-                return
-            }
+        if (!res.rows.length) {
+            throw new Error('No logs found for this URL');
+        }
 
-            resolve(rows)
-        })
-    })
-}
+        return res.rows;
+    } catch (error) {
+        console.log("error: "+`Error retrieving logs: ${error.message}`);
+        throw error;
+    }
+};
 
 module.exports = {
     saveLog,
     getLogsByUrl
-}
+};
