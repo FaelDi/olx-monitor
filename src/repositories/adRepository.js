@@ -1,7 +1,8 @@
-import { pool } from '/src/database/database' // Assuming you're using pg.Pool
+const { pool } = require('../database/database.js'); // Assuming you're using pg.Pool
+const $logger = require('../components/Logger.js');
 
 const getAd = async (id) => {
-   console.debug('adRepository: getAd');
+    $logger.debug('adRepository: getAd');
 
     const query = `SELECT * FROM ads WHERE id = $1`;
     const values = [id];
@@ -21,7 +22,7 @@ const getAd = async (id) => {
 };
 
 const getAdsBySearchTerm = async (term, limit) => {
-   console.debug('adRepository: getAdsBySearchTerm');
+    $logger.debug('adRepository: getAdsBySearchTerm');
 
     const query = `SELECT * FROM ads WHERE searchTerm = $1 LIMIT $2`;
     const values = [term, limit];
@@ -41,7 +42,7 @@ const getAdsBySearchTerm = async (term, limit) => {
 };
 
 const getAdsBySearchId = async (id, limit) => {
-   console.debug('adRepository: getAdsBySearchId');
+    $logger.debug('adRepository: getAdsBySearchId');
 
     const query = `SELECT * FROM ads WHERE searchId = $1 LIMIT $2`;
     const values = [id, limit];
@@ -61,7 +62,7 @@ const getAdsBySearchId = async (id, limit) => {
 };
 
 const createAd = async (ad) => {
-   console.debug('adRepository: createAd');
+    $logger.debug('adRepository: createAd');
 
     const query = `
         INSERT INTO ads (id, url, title, searchTerm, price, created, lastUpdate)
@@ -89,7 +90,7 @@ const createAd = async (ad) => {
 };
 
 const updateAd = async (ad) => {
-   console.debug('adRepository: updateAd');
+    $logger.debug('adRepository: updateAd');
 
     const query = `UPDATE ads SET price = $1, lastUpdate = $2 WHERE id = $3`;
     const values = [ad.price, new Date().toISOString(), ad.id];
@@ -103,7 +104,7 @@ const updateAd = async (ad) => {
     }
 };
 
-export default {
+module.exports = {
     getAd,
     getAdsBySearchTerm,
     getAdsBySearchId,
