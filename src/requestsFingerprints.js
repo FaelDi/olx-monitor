@@ -9,4 +9,4 @@ const requestsFingerprints = [
   ],
 ]
 
-module.exports = { requestsFingerprints }
+export { requestsFingerprints }

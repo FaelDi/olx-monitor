@@ -1,5 +1,6 @@
-const { Pool } = require('pg');
-const config = require('../config'); // Assuming this contains your PostgreSQL config
+import pkg from 'pg';        // Import the entire 'pg' module as a default import.
+const { Pool } = pkg;
+import config from '../config.js' // Assuming this contains your PostgreSQL config
 
 // Initialize PostgreSQL connection
 const pool = new Pool({
@@ -60,7 +61,7 @@ const createTables = async () => {
 };
 
 // Export the pool and createTables function
-module.exports = {
+export {
   pool,
   createTables,
 };

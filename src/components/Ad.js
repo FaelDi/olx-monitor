@@ -1,9 +1,8 @@
 'use strict';
 
-const notifier = require('./Notifier')
-const $logger = require('./Logger')
+import notifier from './Notifier.js'
 
-const adRepository = require('../repositories/adRepository.js')
+import adRepository from '../repositories/adRepository.js'
 
 class Ad {
 
@@ -21,7 +20,7 @@ class Ad {
     process = async () => {
 
         if (!this.isValidAd()) {
-            $logger.debug('Ad not valid');
+           console.debug('Ad not valid');
             return false
         }
 
@@ -142,4 +141,4 @@ class Ad {
     }
 }
 
-module.exports = Ad
+export default Ad

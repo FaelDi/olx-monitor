@@ -1,9 +1,8 @@
-const config = require("./config")
-const cron = require("node-cron")
-const { initializeCycleTLS } = require("./components/CycleTls")
-const $logger = require("./components/Logger")
-const { scraper } = require("./components/Scraper")
-const { createTables } = require("./database/database.js")
+import config from "./config.js"
+import cron from "node-cron"
+import { initializeCycleTLS } from "./components/CycleTls.js"
+import { scraper } from "./components/Scraper.js"
+import { createTables } from "./database/database.js"
 
 const runScraper = async () => {
 

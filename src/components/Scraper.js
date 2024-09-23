@@ -1,9 +1,8 @@
-const cheerio = require('cheerio')
-const $logger = require('./Logger')
-const $httpClient = require('./HttpClient.js')
-const scraperRepository = require('../repositories/scrapperRepository.js')
+import * as cheerio from 'cheerio'
+import $httpClient from './HttpClient.js'
+import scraperRepository from '../repositories/scrapperRepository.js'
 
-const Ad = require('./Ad.js');
+import Ad from './Ad.js'
 
 let page = 1
 let maxPrice = 0
@@ -28,7 +27,7 @@ const scraper = async (url) => {
     console.log(`Will notify: ${notify}`)
 
     do {
-        currentUrl = setUrlParam(url, 'o', page)
+        const currentUrl = setUrlParam(url, 'o', page)
         let response
         try {
             response        = await $httpClient(currentUrl)
@@ -84,7 +83,7 @@ const scrapePage = async ($, searchTerm, notify) => {
 
         for (let i = 0; i < adList.length; i++) {
 
-            $logger.debug('Checking ad: ' + (i + 1))
+           console.debug('Checking ad: ' + (i + 1))
 
             const advert = adList[i]
             const title = advert.subject
@@ -134,10 +133,12 @@ const urlAlreadySearched = async (url) => {
 }
 
 const setUrlParam = (url, param, value) => {
+    
     const newUrl = new URL(url)
     let searchParams = newUrl.searchParams;
     searchParams.set(param, value);
     newUrl.search = searchParams.toString();
+
     return newUrl.toString();
 }
 
@@ -151,6 +152,6 @@ const checkMaxPrice = (price, maxPrice) => {
     else return maxPrice
 }
 
-module.exports = {
+export {
     scraper
 }
