@@ -8,8 +8,8 @@ const pool = new Pool({
   password: config.databasePassword,
   port: config.databasePort,
   ssl: {
-    rejectUnauthorized: false,  // This accepts self-signed certificates (not recommended for production)
-  },
+    rejectUnauthorized: false // This allows insecure SSL certificates, you can set it to true if you have a valid certificate
+  }
 });
 
 // Function to create tables
