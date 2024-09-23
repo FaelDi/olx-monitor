@@ -22,7 +22,7 @@ config.telegramToken = process.env.TELEGRAM_TOKEN
 config.databaseUser = process.env.PGUSER
 config.databaseHost = process.env.PGHOST
 config.database = process.env.PGDATABASE 
-config.databasePassword = process.env.DATABASE_PASSWORD
+config.databasePassword = process.env.PGPASSWORD
 config.databasePort = process.env.DATABASE_PORT
 config.logger={
     logFilePath: 'src/data/scrapper.log',
