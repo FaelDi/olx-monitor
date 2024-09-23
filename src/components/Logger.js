@@ -1,4 +1,4 @@
-import config from '/src/config'
+import config from '/src/config/config'
 import SimpleNodeLogger from 'simple-node-logger'
 logger = SimpleNodeLogger.createSimpleLogger( config.logger );
 

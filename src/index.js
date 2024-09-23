@@ -1,4 +1,4 @@
-import config from "/src/config"
+import config from "/src/config/config"
 import cron from "node-cron"
 import { initializeCycleTLS } from "/src/components/CycleTls"
 import { scraper } from "/src/components/Scraper"

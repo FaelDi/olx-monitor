@@ -1,6 +1,6 @@
 'use strict';
 
-import config from '/src/config';
+import config from '/src/config/config';
 import axios from 'axios';
 
 const sendNotification =  (msg) => {
