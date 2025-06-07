@@ -36,7 +36,7 @@ app.post('/start-scraper', async (req, res) => {
   res.json({ message: "Scraper started" })
 })
 
-cron.schedule(config.interval, async () => {
+/*cron.schedule(config.interval, async () => {
   try {
     if(start){
       await runScraper()
@@ -44,7 +44,7 @@ cron.schedule(config.interval, async () => {
   } catch (error) {
     console.error("Error running scraper: ", error)
   }
-})
+})*/  
 
 app.listen(port, () => {
   console.log(`Server running`)
