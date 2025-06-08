@@ -1,26 +1,29 @@
-const config = require("./config")
-const cron = require("node-cron")
-const express = require("express")
-const path = require("path") // Add this line
-const { initializeCycleTLS } = require("./components/CycleTls")
-const { scraper } = require("./components/Scraper")
-const { createTables } = require("./database/database.js")
-letstart = false;
-const app = express()
-const port = 8080
+const config = require("./config");
+const cron = require("node-cron");
+const express = require("express");
+const path = require("path");
+const { initializeCycleTLS } = require("./components/CycleTls");
+const { scraper } = require("./components/Scraper");
+const { createTables } = require("./database/database.js");
+
+let start = false;
+const app = express();
+const port = process.env.PORT || 8080;
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public'))) // Add this line
 
 const runScraper = async () => {
-  for (let i = 0; i < config.urls.length; i++) {
-    try {
-      scraper(config.urls[i])
-    } catch (error) {
-      console.debug("error: " + error)
-    }
-  }
-}
+  await Promise.all(
+    config.urls.map(async (url) => {
+      try {
+        await scraper(url);
+      } catch (error) {
+        console.debug("error: " + error);
+      }
+    })
+  );
+};
 
 const main = async () => {
   console.debug("Program started")
