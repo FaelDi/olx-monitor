@@ -16,14 +16,12 @@ config.urls = [
 // this tool can help you create the interval string:
 // https://tool.crontap.com/cronjob-debugger
 
+console.log('PGDATABASE_URL:', process.env.PGDATABASE_URL);
+
 config.interval = '*/2 * * * *' 
 config.telegramChatID = process.env.TELEGRAM_CHAT_ID
 config.telegramToken = process.env.TELEGRAM_TOKEN
-config.databaseUser = process.env.PGUSER
-config.databaseHost = process.env.PGHOST
-config.database = process.env.PGDATABASE 
-config.databasePassword = process.env.PGPASSWORD
-config.databasePort = process.env.DATABASE_PORT
+config.databaseUrl = process.env.PGDATABASE_URL 
 config.logger={
     logFilePath: 'src/data/scrapper.log',
     timestampFormat:'YYYY-MM-DD HH:mm:ss'

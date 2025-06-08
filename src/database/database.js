@@ -2,14 +2,7 @@ const { Pool } = require('pg');
 const config = require("../config") 
 
 const pool = new Pool({
-  user: config.databaseUser,
-  host: config.databaseHost,
-  database: config.database,
-  password: config.databasePassword,
-  port: config.databasePort,
-  ssl: {
-    rejectUnauthorized: false // This allows insecure SSL certificates, you can set it to true if you have a valid certificate
-  }
+  connectionString: config.databaseUrl
 });
 
 // Function to create tables
