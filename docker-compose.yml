@@ -6,7 +6,6 @@ services:
     deploy:
       replicas: 3
     volumes:
-      - ./src/config:/usr/app/config
-      - ./src/.env:/usr/app/.env
+      - ./.env:/usr/app/.env
       - ./data:/usr/data
 

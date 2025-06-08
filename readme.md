@@ -15,7 +15,7 @@ Se você já está familiarizado com a API do Telegram e já mexeu bom bots segu
 ### Usando Node
 
 1. Clonar ou fazer download do repositório `git clone https://github.com/carmolim/olx-monitor.git`
-1. Acessar a pasta onde os arquivos js se encontram `cd src`
+1. Acessar a pasta do projeto `cd olx-monitor`
 1. Instalar as dependências com o comando `npm install`
 1. Renomear o arquivo `example.env` para `.env` e incluir as informações do seu BOT e do seu grupo que irá receber as notificações
 1. Definir as URLs a serem monitoradas usando a variável de ambiente `SCRAPER_URLS` (separadas por vírgula)
