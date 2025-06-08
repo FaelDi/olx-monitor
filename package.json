@@ -2,7 +2,7 @@
   "name": "olx-monitor",
   "version": "1.0.0",
   "description": "Programa que monitora novos anúncios feitos no OLX, alteração de preços em anúncios existentes e envia notificações pelo Telegram.",
-  "main": "index",
+  "main": "index.js",
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1",
     "axios": "^1.6.3",
@@ -14,7 +14,8 @@
     "node-cron": "^3.0.2",
     "pg": "^8.12.0",
     "simple-node-logger": "^18.12.24",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "ws": "^7.5.10"
   },
   "scripts": {
     "dev": "nodemon index",

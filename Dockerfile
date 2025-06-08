@@ -1,13 +1,30 @@
-# Builder Stage
-FROM node:16 AS builder
+
+
+# Etapa de build
+FROM node:20 AS builder
+
 WORKDIR /usr/app
-COPY . .
+
+# Copia os arquivos do projeto
+COPY package*.json ./
 RUN npm ci --only=production
 
-# Final Stage
-FROM node:16-alpine
-ARG NODE_ENV
+COPY . .
+
+# Etapa final
+FROM node:20  
+# <- Evita -alpine para manter suporte nativo a fetch e WebSocket
+
 WORKDIR /usr/app
-COPY --from=builder /usr/app/ .
+
+# Copia os arquivos da etapa de build
+COPY --from=builder /usr/app .
+
+# Define variável de ambiente de produção (opcional)
+ENV NODE_ENV=production
+
+# Exponha a porta (se usar express)
 EXPOSE 8080
-CMD [ "npm", "start" ]
+
+# Comando padrão
+CMD ["npm", "start"]

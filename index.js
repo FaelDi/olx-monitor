@@ -1,17 +1,16 @@
 const config = require("./config");
 const cron = require("node-cron");
-const express = require("express");
+
+if (typeof WebSocket === "undefined") {
+  global.WebSocket = require("ws");
+}
 const path = require("path");
 const { initializeCycleTLS } = require("./components/CycleTls");
 const { scraper } = require("./components/Scraper");
 const { createTables } = require("./database/database.js");
 
 let start = false;
-const app = express();
-const port = process.env.PORT || 8080;
 
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public'))) // Add this line
 
 const runScraper = async () => {
   await Promise.all(
@@ -33,11 +32,7 @@ const main = async () => {
   start = true;
 }
 
-// Expose the main function via an HTTP endpoint
-app.post('/start-scraper', async (req, res) => {
-  await main()
-  res.json({ message: "Scraper started" })
-})
+
 
 cron.schedule(config.interval, async () => {
   try {
@@ -49,8 +44,5 @@ cron.schedule(config.interval, async () => {
   }
 })
 
-app.listen(port, () => {
-  console.log(`Server running`)
-})
 
 main();

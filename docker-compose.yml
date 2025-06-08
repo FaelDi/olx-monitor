@@ -4,7 +4,7 @@ services:
     build: .
     restart: unless-stopped
     deploy:
-      replicas: 3
+      replicas: 1
     volumes:
       - ./.env:/usr/app/.env
       - ./data:/usr/data
