@@ -9,5 +9,5 @@ FROM node:16-alpine
 ARG NODE_ENV
 WORKDIR /usr/app
 COPY --from=builder /usr/app/ ./
-EXPOSE 3000
+EXPOSE 8080
 CMD [ "npm", "start" ]
