@@ -18,8 +18,8 @@ Se você já está familiarizado com a API do Telegram e já mexeu bom bots segu
 1. Acessar a pasta onde os arquivos js se encontram `cd src`
 1. Instalar as dependências com o comando `npm install`
 1. Renomear o arquivo `example.env` para `.env` e incluir as informações do seu BOT e do seu grupo que irá receber as notificações
-1. Incluir as URLs que você quer que sejam monitoradas no arquivo `config`
-1. Definir qual o intervalo que você quer que as buscas sejam feitas no arquivo `config`
+1. Definir as URLs a serem monitoradas usando a variável de ambiente `SCRAPER_URLS` (separadas por vírgula)
+1. Opcionalmente definir o intervalo de execução em `SCRAPER_INTERVAL`
 1. Executar o script usando o comando `node index`
 1. Acompanhar o andamento do script no Terminal
 1. Se correu tudo certo, dois novos arquivos foram criados dentro da pasta `data`: `ads.db` que é o banco de dados e o `scrapper.log` com os logs de execução do script
@@ -61,25 +61,14 @@ Eu não sei o que você está procurando no OLX, mas você precisa dizer para o 
 
 Recomendo utilizar filtros bem específicos para não gerar resultados com muitos itens. Como esse script irá varrer todos os resultados encontrados, pode ser possível que não seja possível passar por todos os resultados dentro do intervalo definido, isso pode fazer com que o Olx perceba uma quantidade alta de chamadas do seu IP e faça algum bloqueio. Isso nunca me aconteceu, mas pode acontecer.
 
-Você pode utilizar uma ou mais pesquisas, basta apenas incluir as `URLs` no arquivo `config` dentro da variável `URLs`
+Você pode utilizar uma ou mais pesquisas definindo a variável de ambiente `SCRAPER_URLS` com as `URLs` desejadas separadas por vírgula
 
 #### Exemplos
 
-##### Apenas uma `URL`
+##### Exemplo de variável `SCRAPER_URLS`
 
 ```
-config.urls = ['https://sp.olx.com.br/sao-paulo-e-regiao/centro/celulares/iphone?cond=1&cond=2&pe=1600&ps=600&q=iphone']
-```
-
-##### Várias `URLs`
-
-Para usar várias `URLs` você só precisa separa-las por vírgula.
-
-```
-config.urls = [
-    'https://sp.olx.com.br/sao-paulo-e-regiao/centro/celulares/iphone?cond=1&cond=2&pe=1600&ps=600&q=iphone',
-    'https://sp.olx.com.br/sao-paulo-e-regiao/imoveis/venda?bae=2&bas=1&gsp=1&pe=600000&ps=100000&se=6&ss=2',
-]
+SCRAPER_URLS='https://sp.olx.com.br/sao-paulo-e-regiao/centro/celulares/iphone?cond=1&cond=2&pe=1600&ps=600&q=iphone,https://sp.olx.com.br/sao-paulo-e-regiao/imoveis/venda?bae=2&bas=1&gsp=1&pe=600000&ps=100000&se=6&ss=2'
 ```
 
 #### Dica
@@ -88,7 +77,7 @@ Quando mais específica sua busca for mais eficiente o script será, se você s�
 
 ## Funcionamento
 
-O funcionamamento do script é simples. Ele percorre um `array` de `URLs` copiadas do OLX, que já contém os filtros de preço mínimo, máximo e etc, encontra os anúncios dentro dessa página e inclui os anúncios encontrados em um banco de dados SQLite e também envia uma notificação para um BOT no Telegram.
+O funcionamento do script é simples. Ele percorre todas as URLs definidas em `SCRAPER_URLS`, encontra os anúncios dentro dessas páginas e inclui os anúncios encontrados em um banco de dados SQLite e também envia uma notificação para um BOT no Telegram.
 
 As entradas salvas no banco de dados são utilizadas posteriormente para detectar alterações nos preços, que também são notificadas através do Telegram.
 
