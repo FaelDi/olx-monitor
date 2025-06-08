@@ -1,13 +1,12 @@
-const { Pool } = require('pg');
-const config = require("../config") 
+const { Pool } = require('@neondatabase/serverless'); // Use o cliente da Neon
+const config = require('../config');
 
 const pool = new Pool({
-  connectionString: config.databaseUrl
+  connectionString: config.databaseUrl,
 });
 
 // Function to create tables
 const createTables = async () => {
-  // Define separate SQL statements for each table creation
   const queries = [
     `
     CREATE TABLE IF NOT EXISTS ads (
@@ -31,31 +30,30 @@ const createTables = async () => {
         created TIMESTAMP NOT NULL
     );
     `,
-    'CREATE INDEX index_logs ON logs USING btree(id);',
-    'CREATE INDEX index_ads ON ads USING btree(id);'
+    'CREATE INDEX IF NOT EXISTS index_logs ON logs USING btree(id);',
+    'CREATE INDEX IF NOT EXISTS index_ads ON ads USING btree(id);'
   ];
 
-  try {
-    // Use a transaction to execute multiple queries
-    await pool.query('BEGIN');
+  const client = await pool.connect(); // necessário para transação com o client
 
-    // Iterate through the array of queries and execute them one by one
+  try {
+    await client.query('BEGIN');
+
     for (const query of queries) {
-      await pool.query(query);
+      await client.query(query);
     }
 
-    // Commit the transaction
-    await pool.query('COMMIT');
+    await client.query('COMMIT');
     console.debug("Tables created successfully.");
   } catch (error) {
-    // Rollback the transaction if an error occurs
-    await pool.query('ROLLBACK');
+    await client.query('ROLLBACK');
     console.error("Error creating tables:", error.message);
+  } finally {
+    client.release(); // liberar conexão
   }
 };
 
-// Export the pool and createTables function
-module.exports =  {
+module.exports = {
   pool,
   createTables,
 };
