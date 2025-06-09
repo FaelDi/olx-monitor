@@ -53,16 +53,19 @@ class Ad {
 
     addToDataBase = async () => {
 
+        let inserted = false
+
         try {
             await adRepository.createAd(this)
             console.debug('Ad ' + this.id + ' added to the database')
+            inserted = true
         }
 
         catch (error) {
             console.debug("error: "+error)
         }
 
-        if (this.notify) {
+        if (this.notify && inserted) {
             const msg = 'Novo Anuncio encontrado!\n' + this.title + ' - R$' + this.price + '\n\n' + this.url;
             let retries = 20;
             const delay = ms => new Promise(resolve => setTimeout(resolve, ms));  // Delay function
